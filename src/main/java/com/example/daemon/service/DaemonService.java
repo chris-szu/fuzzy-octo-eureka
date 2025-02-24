@@ -1,5 +1,6 @@
 package com.example.daemon.service;
 
+import com.example.daemon.dto.DaemonTarget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,10 +17,10 @@ public class DaemonService {
     private volatile boolean isRunning = false;
     private Thread workerThread;
 
-    public synchronized boolean startDaemon() {
+    public synchronized boolean startDaemon(DaemonTarget target) {
         if (isRunning) {
             logger.info("Daemon is already running");
-            return false;
+            return false; // don't allow 2nd start
         }
 
         isRunning = true;
@@ -30,10 +31,10 @@ public class DaemonService {
         return true;
     }
 
-    public synchronized boolean stopDaemon() {
+    public synchronized boolean stopDaemon(String id) {
         if (!isRunning) {
             logger.info("Daemon is not running");
-            return false;
+            return true; // nothing to do here, don't fail
         }
 
         logger.info("Stopping daemon service...");

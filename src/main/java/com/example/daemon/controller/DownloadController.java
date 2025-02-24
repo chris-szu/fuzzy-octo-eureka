@@ -1,5 +1,9 @@
 package com.example.daemon.controller;
 
+import com.example.daemon.dto.ControlDaemonRequest;
+import com.example.daemon.dto.ControlDaemonResponse;
+import com.example.daemon.dto.DaemonAction;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +17,27 @@ public class DownloadController {
     private DaemonService daemonService;
 
     @PostMapping("/")
-    public ResponseEntity<String> startDaemon() {
-        boolean started = daemonService.startDaemon();
-        if (started) {
-            return ResponseEntity.ok("Daemon started successfully");
-        } else {
-            return ResponseEntity.badRequest().body("Daemon is already running");
+    public ResponseEntity<ControlDaemonResponse> controlDaemon(@Valid @RequestBody ControlDaemonRequest request) {
+        switch (request.action()) {
+            case START:
+                boolean started = daemonService.startDaemon(request.target());
+                if (started) {
+                    return ResponseEntity.ok(new ControlDaemonResponse());
+                } else {
+                    return ResponseEntity.badRequest().body(new ControlDaemonResponse());
+                }
+            case STOP:
+                if (request.downloadId() == null || request.downloadId().isEmpty()) {
+                    return ResponseEntity.badRequest().body(new ControlDaemonResponse());
+                }
+                boolean stopped = daemonService.stopDaemon(request.downloadId());
+                if (stopped) {
+                    return ResponseEntity.ok(new ControlDaemonResponse());
+                } else {
+                    return ResponseEntity.badRequest().body(new ControlDaemonResponse());
+                }
+            default:
+                return ResponseEntity.badRequest().body(new ControlDaemonResponse());
         }
     }
 }
