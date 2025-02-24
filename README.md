@@ -72,3 +72,12 @@ response
 
 # Daemon process
 
+Would be nice to persist daemon status in DB, here are some todo items
+1. API key needs to be provided for StackOverflow API
+2. retry mechanism for failed requests
+3. rate limiting for StackOverflow API
+4. logging could be improved
+5. observability not added
+6. error handling could be improved, which should also cover the retry issue above
+7. tests are missing, current code are very script like
+8. daemon could be stateless, plug-in any desired download target and it should work, maybe some sort of adapter/builder pattern
