@@ -5,6 +5,7 @@ import com.example.daemon.dto.StopDaemonResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import jakarta.annotation.PreDestroy;
@@ -24,6 +25,12 @@ public class DaemonService {
     private final ObjectMapper objectMapper;
     private final WebClient webClient;
     private final AtomicBoolean isSchedulerEnabled = new AtomicBoolean(false);
+
+    @Value("${app.files.questions}")
+    private String questionsFile;
+
+    @Value("${app.files.answers}")
+    private String answersFile;
 
     public DaemonService(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
@@ -82,7 +89,7 @@ public class DaemonService {
                                 String singleLine = item.toString();
                                 // todo catch exception separately and retry later
                                 Files.writeString(
-                                        Path.of("questions.jsonl"), // todo use a configurable path
+                                        Path.of(questionsFile), // todo use a configurable path
                                         singleLine + System.lineSeparator(),
                                         StandardOpenOption.CREATE,
                                         StandardOpenOption.APPEND
@@ -99,7 +106,7 @@ public class DaemonService {
         try {
             List<String> questionIds = new ArrayList<>();
             // Read questions from the JSONL file
-            Files.readAllLines(Path.of("questions.jsonl")).forEach(line -> {
+            Files.readAllLines(Path.of(questionsFile)).forEach(line -> {
                 try {
                     var questionNode = objectMapper.readTree(line);
                     questionIds.add(questionNode.get("question_id").asText());
@@ -133,7 +140,7 @@ public class DaemonService {
 
                                         String singleLine = wrapper.toString();
                                         Files.writeString(
-                                                Path.of("answers.jsonl"),
+                                                Path.of(answersFile),
                                                 singleLine + System.lineSeparator(),
                                                 StandardOpenOption.CREATE,
                                                 StandardOpenOption.APPEND

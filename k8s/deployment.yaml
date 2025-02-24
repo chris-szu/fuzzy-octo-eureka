@@ -1,0 +1,27 @@
+# k8s/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stackoverflow-daemon
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stackoverflow-daemon
+  template:
+    metadata:
+      labels:
+        app: stackoverflow-daemon
+    spec:
+      containers:
+        - name: stackoverflow-daemon
+          image: stackoverflow-daemon:latest
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: data-volume
+              mountPath: /app/data
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: stackoverflow-data-pvc
