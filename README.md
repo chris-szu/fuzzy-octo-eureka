@@ -6,7 +6,7 @@ offsite test
 2. Build a daemon process to continuously fetch questions and answers from StackOverflow API
 
 # API
-API is acting as a controller for the background daemon process, possible downloadable targets are predefined on server-side, could be some sort of config (omit for the offsite test)
+API is acting as a controller for the background daemon process, possible downloadable targets are predefined on server-side, could be some sort of config (omitted for the offsite test)
 
 All endpoints should be authenticated and rate limited (omitted for the offsite test)
 
@@ -15,13 +15,11 @@ POST /api/v1/downloads - start/stop download
 request (body)
 {
     "action": "start" | "stop",
-    "target": "stackoverflow", // start only
     "download_id": "1234", // stop only
 }
 response
 {
     "action": "start",
-    "target": "stackoverflow",
     "result": "starting" | "already started" | "error",
     "download_id": "1234",
     "detail": {},

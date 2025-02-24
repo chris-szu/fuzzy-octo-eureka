@@ -6,10 +6,7 @@ import org.springframework.lang.Nullable;
 
 public record ControlDaemonRequest (
     @NotNull(message = "Action is required")
-    DaemonAction action,
-
-    @NotNull(message = "Target is required")
-    DaemonTarget target,
+    DaemonAction action, // todo make it accept any letter casing
 
     @Nullable
     @JsonProperty("download_id")
