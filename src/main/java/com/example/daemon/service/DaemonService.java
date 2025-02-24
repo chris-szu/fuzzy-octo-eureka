@@ -31,7 +31,7 @@ public class DaemonService {
         return true;
     }
 
-    public synchronized boolean stopDaemon(String id) {
+    public synchronized boolean stopDaemon() {
         if (!isRunning) {
             logger.info("Daemon is not running");
             return true; // nothing to do here, don't fail

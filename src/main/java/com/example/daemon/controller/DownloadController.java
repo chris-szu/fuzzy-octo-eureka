@@ -30,7 +30,7 @@ public class DownloadController {
                 if (request.downloadId() == null || request.downloadId().isEmpty()) {
                     return ResponseEntity.badRequest().body(new ControlDaemonResponse());
                 }
-                boolean stopped = daemonService.stopDaemon(request.downloadId());
+                boolean stopped = daemonService.stopDaemon();
                 if (stopped) {
                     return ResponseEntity.ok(new ControlDaemonResponse());
                 } else {
