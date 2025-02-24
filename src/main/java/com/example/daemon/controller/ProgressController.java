@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/progress")
 public class ProgressController {
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<String> getProgress() {
         return ResponseEntity.ok("get process");
     }

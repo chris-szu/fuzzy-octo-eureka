@@ -16,7 +16,7 @@ public class DownloadController {
     @Autowired
     private DaemonService daemonService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<ControlDaemonResponse> controlDaemon(@Valid @RequestBody ControlDaemonRequest request) {
         switch (request.action()) {
             case START:

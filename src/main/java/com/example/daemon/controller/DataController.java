@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/data")
 public class DataController {
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<String> getData() {
         return ResponseEntity.ok("get data");
     }
